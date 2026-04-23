@@ -3,13 +3,14 @@ from typing import Callable
 
 
 def generator_numbers(text: str):
-    # шукаємо дійсні числа
-    pattern = r"\b\d+\.\d+\b"
+    # число має бути обмежене пробілами
+    pattern = r" \d+\.\d+ "
 
     matches = re.findall(pattern, text)
 
     for number in matches:
-        yield float(number)
+        yield float(number.strip())  # прибираємо пробіли
+
 
 def sum_profit(text: str, func: Callable):
     total = 0
