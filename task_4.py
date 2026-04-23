@@ -1,74 +1,20 @@
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            return "Give me name and phone please."
-        except KeyError:
-            return "Contact not found."
-        except IndexError:
-            return "Enter user name."
-    return inner
+command_parts = command.split()
 
+if not command_parts:
+    continue
 
-@input_error
-def add_contact(args, contacts):
-    name, phone = args
-    contacts[name] = phone
-    return "Contact added."
+cmd = command_parts[0]
+args = command_parts[1:]
 
-
-@input_error
-def change_contact(args, contacts):
-    name, phone = args
-    contacts[name] = phone
-    return "Contact updated."
-
-
-@input_error
-def show_phone(args, contacts):
-    name = args[0]
-    return contacts[name]
-
-
-@input_error
-def show_all(contacts):
-    if not contacts:
-        return "No contacts saved."
-    result = ""
-    for name, phone in contacts.items():
-        result += f"{name}: {phone}\n"
-    return result.strip()
-
-
-def main():
-    contacts = {}
-
-    while True:
-        command = input("Enter a command: ").strip().lower()
-
-        if command in ["close", "exit"]:
-            print("Good bye!")
-            break
-
-        elif command.startswith("add"):
-            args = command.split()[1:]
-            print(add_contact(args, contacts))
-
-        elif command.startswith("change"):
-            args = command.split()[1:]
-            print(change_contact(args, contacts))
-
-        elif command.startswith("phone"):
-            args = command.split()[1:]
-            print(show_phone(args, contacts))
-
-        elif command == "all":
-            print(show_all(contacts))
-
-        else:
-            print("Invalid command.")
-
-
-if __name__ == "__main__":
-    main()
+if cmd == "add":
+    add_contact(args)
+elif cmd == "change":
+    change_contact(args)
+elif cmd == "phone":
+    show_phone(args)
+elif cmd == "all":
+    show_all()
+elif cmd in ["exit", "close"]:
+    break
+else:
+    print("Невідома команда")
